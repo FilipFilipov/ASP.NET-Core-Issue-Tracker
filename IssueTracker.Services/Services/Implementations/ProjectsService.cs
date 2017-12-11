@@ -51,5 +51,10 @@ namespace IssueTracker.Services.Services.Implementations
 
             return newProject;
         }
+
+        public async Task<bool> ProjectExists(string name)
+        {
+            return await db.Projects.AnyAsync(p => p.Name == name);
+        }
     }
 }

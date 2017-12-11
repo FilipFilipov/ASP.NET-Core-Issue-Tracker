@@ -9,5 +9,7 @@ namespace IssueTracker.Services.Services
         Task<ProjectViewModel> GetProjectAsync(int projectId);
 
         Task<Project> CreateProjectAsync(ProjectViewModel model);
+
+        Task<bool> ProjectExists(string name);
     }
 }

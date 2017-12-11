@@ -3,6 +3,7 @@ using IssueTracker.Controllers;
 using IssueTracker.Services;
 using IssueTracker.Services.Models;
 using IssueTracker.Services.Services;
+using IssueTracker.Web.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,7 +43,15 @@ namespace IssueTracker.Web.Controllers
                 return View(model);
             }
 
+            if (await projects.ProjectExists(model.Name))
+            {
+                ModelState.AddModelError(nameof(model.Name), "Name is taken");
+                return View(model);
+            }
+
             await projects.CreateProjectAsync(model);
+
+            this.AddNotification("Project created!", NotificationType.Success);
 
             return RedirectToAction(nameof(Index), "Home");
         }

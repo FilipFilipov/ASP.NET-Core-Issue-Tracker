@@ -1,0 +1,127 @@
+﻿@using IssueTracker.Web.Extensions
+<!--   Copyright (c) 2014 The Board of Trustees of The University of Alabama    *
+ *     All rights reserved.													    *
+ *																				*
+ *     Redistribution and use in source and binary forms, with or without		*
+ *     modification, are permitted provided that the following conditions		*
+ *     are met:																	*
+ *																				*
+ *     1. Redistributions of source code must retain the above copyright		*
+ *     notice, this list of conditions and the following disclaimer.			*
+ *     2. Redistributions in binary form must reproduce the above copyright		*
+ *     notice, this list of conditions and the following disclaimer in the		*
+ *     documentation and/or other materials provided with the distribution.		*
+ *     3. Neither the name of the University nor the names of the contributors	*
+ *     may be used to endorse or promote products derived from this software	*
+ *     without specific prior written permission.								*
+ *																				*
+ *     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS		*
+ *     "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT		*
+ *     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS		*
+ *     FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL				*
+ *     THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,			*
+ *     INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES		*
+ *     (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR		*
+ *      SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)		*
+ *     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,		*
+ *     STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)			*
+ *     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED		*
+ *     OF THE POSSIBILITY OF SUCH DAMAGE.									  -->
+
+@{
+    var errorList = Html.GetNotifications(NotificationType.Error);
+    var warningList = Html.GetNotifications(NotificationType.Warning);
+    var successList = Html.GetNotifications(NotificationType.Success);
+    var infoList = Html.GetNotifications(NotificationType.Info);
+}
+<!-- display errors -->
+@if (errorList != null)
+{
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        @if (errorList.Count() > 1)
+        {
+            <strong><span class="glyphicon glyphicon-remove"></span> There are @errorList.Count() errors: </strong>
+            <ul>
+                @foreach (String message in errorList)
+                {
+                    <li>@Html.Raw(message)</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <strong><span class="glyphicon glyphicon-remove"></span> Error: </strong>
+            @Html.Raw(errorList.First())
+        }
+    </div>
+}
+
+<!-- display warnings -->
+@if (warningList != null)
+{
+    <div class="alert alert-warning alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        @if (warningList.Count() > 1)
+        {
+            <strong><span class="glyphicon glyphicon-warning-sign"></span> There are @warningList.Count() warnings: </strong>
+            <ul>
+                @foreach (String message in warningList)
+                {
+                    <li>@Html.Raw(message)</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <strong><span class="glyphicon glyphicon-warning-sign"></span> Warning: </strong>
+            @Html.Raw(warningList.First())
+        }
+    </div>
+}
+
+<!-- display success -->
+@if (successList != null)
+{
+    <div class="alert alert-success alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        @if (successList.Count() > 1)
+        {
+            <strong><span class="glyphicon glyphicon-ok"></span> There are @successList.Count() successful notifications: </strong>
+            <ul>
+                @foreach (String message in successList)
+                {
+                    <li>@Html.Raw(message)</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <strong><span class="glyphicon glyphicon-ok"></span> Success! </strong>
+            @Html.Raw(successList.First())
+        }
+    </div>
+}
+
+<!-- display success -->
+@if (infoList != null)
+{
+    <div class="alert alert-info alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        @if (infoList.Count() > 1)
+        {
+            <strong><span class="glyphicon glyphicon-info-sign"></span> There are @infoList.Count() notifications: </strong>
+            <ul>
+                @foreach (String message in infoList)
+                {
+                    <li>@Html.Raw(message)</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <strong><span class="glyphicon glyphicon-info-sign"></span> </strong>
+            @Html.Raw(infoList.First())
+        }
+    </div>
+}
