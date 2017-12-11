@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace IssueTracker.Data.Models
 {
@@ -9,12 +7,13 @@ namespace IssueTracker.Data.Models
     {
         public int Id { get; set; }
 
+        [Required]
         [MaxLength(100)]
         public string Name { get; set; }
 
-        public ICollection<ProjectLabels> ProjectLabels { get; set; }
+        public ICollection<ProjectLabel> ProjectLabels { get; set; } = new List<ProjectLabel>();
 
-        public ICollection<IssueLabels> IssueLabels { get; set; }
+        public ICollection<IssueLabel> IssueLabels { get; set; } = new List<IssueLabel>();
 
     }
 }

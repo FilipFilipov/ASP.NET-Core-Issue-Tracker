@@ -4,7 +4,7 @@ using System.Text;
 
 namespace IssueTracker.Data.Models
 {
-    public class IssueLabels
+    public class IssueLabel
     {
         public int IssueId { get; set; }
 

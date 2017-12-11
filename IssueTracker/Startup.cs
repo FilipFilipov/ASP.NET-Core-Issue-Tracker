@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +8,10 @@ using Microsoft.Extensions.DependencyInjection;
 using IssueTracker.Data;
 using IssueTracker.Models;
 using IssueTracker.Services;
+using IssueTracker.Services.Implementations;
+using IssueTracker.Services.Services;
+using IssueTracker.Services.Services.Implementations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IssueTracker
 {
@@ -40,10 +41,17 @@ namespace IssueTracker
                 .AddEntityFrameworkStores<IssueTrackerDbContext>()
                 .AddDefaultTokenProviders();
 
-            // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IProjectsService, ProjectsService>();
+            services.AddScoped<IPrioritiesService, PrioritiesService>();
+            services.AddScoped<ILabelsService, LabelsService>();
 
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
+
+            services.AddAutoMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

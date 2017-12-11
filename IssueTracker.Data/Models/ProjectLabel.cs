@@ -1,6 +1,6 @@
 ﻿namespace IssueTracker.Data.Models
 {
-    public class ProjectLabels
+    public class ProjectLabel
     {
         public int ProjectId { get; set; }
 

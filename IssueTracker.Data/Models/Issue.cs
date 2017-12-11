@@ -36,8 +36,8 @@ namespace IssueTracker.Data.Models
 
         public PriorityType? Priority { get; set; }
 
-        public ICollection<IssueLabels> IssueLabels { get; set; }
+        public ICollection<IssueLabel> IssueLabels { get; set; } = new List<IssueLabel>();
 
-        public ICollection<Comment> Comments { get; set; }
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }

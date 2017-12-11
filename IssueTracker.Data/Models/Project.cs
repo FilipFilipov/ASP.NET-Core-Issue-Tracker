@@ -25,7 +25,10 @@ namespace IssueTracker.Data.Models
         [MaxLength(50)]
         public string Key { get; set; }
 
-        public ICollection<ProjectLabels> ProjectLabels { get; set; }
+        public ICollection<Priority> Priorities { get; set; } = new List<Priority>();
 
+        public ICollection<ProjectLabel> ProjectLabels { get; set; } = new List<ProjectLabel>();
+
+        public ICollection<Issue> Issues { get; set; } = new List<Issue>();
     }
 }
