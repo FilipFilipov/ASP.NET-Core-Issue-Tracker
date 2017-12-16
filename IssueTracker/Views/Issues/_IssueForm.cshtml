@@ -1,0 +1,43 @@
+﻿@model IssueTracker.Services.Models.IssueViewModel
+    
+@{
+    var users = ViewBag.UserList as SelectListItem[];     
+    var priorities = ViewBag.PriorityList as SelectListItem[]; 
+    var lables = ViewBag.LabelList as SelectListItem[];   
+}
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control"/>
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="AssigneeId" class="control-label"></label>
+        <select asp-for="AssigneeId" class="form-control" asp-items="@users"></select>
+        <span asp-validation-for="AssigneeId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DueDate" class="control-label"></label>
+        <input asp-for="DueDate" class="form-control"/>
+        <span asp-validation-for="DueDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Priority" class="control-label"></label>
+        <select asp-for="Priority" class="form-control" asp-items="@priorities"></select>
+        <span asp-validation-for="Priority" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Labels" class="control-label"></label>
+        <select asp-for="Labels" class="form-control" asp-items="@lables"></select>
+        <span asp-validation-for="Labels" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-default"/>
+    </div>
+</form>
+

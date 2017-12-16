@@ -1,6 +1,4 @@
 ﻿using System.Threading.Tasks;
-using IssueTracker.Controllers;
-using IssueTracker.Services;
 using IssueTracker.Services.Models;
 using IssueTracker.Services.Services;
 using IssueTracker.Web.Extensions;
@@ -21,9 +19,10 @@ namespace IssueTracker.Web.Controllers
             this.users = users;
         }
 
-        public IActionResult Index()
+        [ActionName("Index")]
+        public async Task<IActionResult> IndexAsync()
         {
-            return View();
+            return View(await projects.GetProjectsAsync());
         }
 
         [ActionName("Create")]
@@ -43,7 +42,7 @@ namespace IssueTracker.Web.Controllers
                 return View(model);
             }
 
-            if (await projects.ProjectExists(model.Name))
+            if (await projects.ProjectExistsAsync(model.Name))
             {
                 ModelState.AddModelError(nameof(model.Name), "Name is taken");
                 return View(model);
@@ -53,7 +52,21 @@ namespace IssueTracker.Web.Controllers
 
             this.AddNotification("Project created!", NotificationType.Success);
 
-            return RedirectToAction(nameof(Index), "Home");
+            return RedirectToAction("Index");
+        }
+
+        [ActionName("Edit")]
+        public async Task<IActionResult> EditAsync(int id)
+        {
+            var model = await projects.GetProjectAsync(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            await GetDropdownValues();
+
+            return View(model);
         }
 
         private async Task GetDropdownValues()

@@ -1,0 +1,42 @@
+﻿@using IssueTracker.Data.Models
+@model IssueTracker.Services.Models.ProjectViewModel
+
+@{
+    var users = ViewBag.UserList as SelectListItem[];
+}
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LeaderId"></label>
+        <select asp-for="LeaderId" class="form-control" asp-items="@users">
+            <option value="">--Select--</option>
+        </select>
+        <span asp-validation-for="LeaderId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Priorities"></label>
+        <select asp-for="Priorities" class="form-control" asp-items="@(Html.GetEnumSelectList<PriorityType>())"></select>
+        <span asp-validation-for="Priorities" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LabelsString"></label>
+        <input asp-for="LabelsString" class="form-control" />
+        <span asp-validation-for="LabelsString" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-default">Save</button>
+    </div>
+</form>

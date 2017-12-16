@@ -1,0 +1,18 @@
+﻿@model IssueTracker.Services.Models.IssueViewModel
+
+@{
+    ViewBag.Title = "Add Issue";
+}
+
+<h2>Add Issue</h2>
+<div class="row">
+    <div class="col-md-6">
+        <section>
+            @Html.Partial("_IssueForm", Model)
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

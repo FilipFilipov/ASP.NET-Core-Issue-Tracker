@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using IssueTracker.Data;
 using IssueTracker.Models;
 using IssueTracker.Services;
-using IssueTracker.Services.Implementations;
 using IssueTracker.Services.Services;
 using IssueTracker.Services.Services.Implementations;
 using Microsoft.AspNetCore.Mvc;
@@ -31,20 +30,22 @@ namespace IssueTracker
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<User, IdentityRole>(options =>
-            {
-                options.Password.RequireDigit = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequiredLength = 6;
-            })
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequiredLength = 6;
+                })
                 .AddEntityFrameworkStores<IssueTrackerDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IProjectsService, ProjectsService>();
             services.AddScoped<IPrioritiesService, PrioritiesService>();
             services.AddScoped<ILabelsService, LabelsService>();
+            services.AddScoped<IIssuesService, IssuesService>();
 
             services.AddMvc(options =>
             {

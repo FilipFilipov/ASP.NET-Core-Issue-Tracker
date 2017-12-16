@@ -16,19 +16,29 @@ namespace IssueTracker.Services.Services.Implementations
         {
         }
 
+        public async Task<ProjectListModel[]> GetProjectsAsync()
+        {
+            return await db.Projects                
+                .ProjectTo<ProjectListModel>()
+                .ToArrayAsync();
+        }
+
         public async Task<ProjectViewModel> GetProjectAsync(int projectId)
         {
             return await db.Projects
                 .Where(p => p.Id == projectId)
-                .ProjectTo<ProjectViewModel>()
+                .ProjectTo<ProjectViewModel>(p => p.Issues.Select(i => i.Assignee))
                 .SingleOrDefaultAsync();
         }
 
         public async Task<Project> CreateProjectAsync(ProjectViewModel model)
         {
-            var newProject = db.Projects.Add(Mapper.Map<Project>(model)).Entity;
+            var newProject = Mapper.Map<Project>(model);
+            newProject.Key = string.Concat(model.Name.Split().Select(word => word.ToUpper()[0]));
+            db.Projects.Add(newProject);
 
-            var dbLabels = db.Labels.Where(l => model.Labels.Contains(l.Name));
+            var dbLabels = await db.Labels.Where(l => model.Labels.Contains(l.Name))
+                .ToArrayAsync();
             foreach (var dbLabel in dbLabels)
             {
                 dbLabel.ProjectLabels.Add(new ProjectLabel { Project = newProject });
@@ -52,7 +62,12 @@ namespace IssueTracker.Services.Services.Implementations
             return newProject;
         }
 
-        public async Task<bool> ProjectExists(string name)
+        public async Task<bool> ProjectExistsAsync(int id)
+        {
+            return await db.Projects.AnyAsync(p => p.Id == id);
+        }
+
+        public async Task<bool> ProjectExistsAsync(string name)
         {
             return await db.Projects.AnyAsync(p => p.Name == name);
         }

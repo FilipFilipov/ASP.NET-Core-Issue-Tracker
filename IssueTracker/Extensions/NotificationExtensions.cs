@@ -33,6 +33,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 
 namespace IssueTracker.Web.Extensions
 {
@@ -57,20 +58,32 @@ namespace IssueTracker.Web.Extensions
 
         public static void AddNotification(this Controller controller, string message, NotificationType notificationType)
         {
+            var tempData = controller.TempData;
             var notificationKey = GetNotificationKeyByType(notificationType);
+            var messages = new HashSet<string>();
 
-            if (!(controller.TempData[notificationKey] is ICollection<string> messages))
+            if (tempData.ContainsKey(notificationKey))
             {
-                controller.TempData[notificationKey] = messages = new HashSet<string>();
+                messages = JsonConvert.DeserializeObject<HashSet<string>>(
+                    tempData[notificationKey].ToString());
             }
 
             messages.Add(message);
+
+            tempData[notificationKey] = JsonConvert.SerializeObject(messages);
         }
 
         public static IEnumerable<string> GetNotifications(this IHtmlHelper htmlHelper, NotificationType notificationType)
         {
+            var tempData = htmlHelper.ViewContext.TempData;
             var notificationKey = GetNotificationKeyByType(notificationType);
-            return htmlHelper.ViewContext.TempData[notificationKey] as ICollection<string>;
+            if (tempData.ContainsKey(notificationKey))
+            {
+                return JsonConvert.DeserializeObject<HashSet<string>>(
+                    tempData[notificationKey].ToString());
+            }
+
+            return null;
         }
 
         private static string GetNotificationKeyByType(NotificationType notificationType)

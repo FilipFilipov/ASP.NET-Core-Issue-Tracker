@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace IssueTracker.Services
+namespace IssueTracker.Services.Services
 {
     public interface IPrioritiesService
     {
-        Task<SelectListItem[]> ListProjectPriorities(int projectId);
+        Task<SelectListItem[]> ListPrioritiesAsync(int projectId);
     }
 }

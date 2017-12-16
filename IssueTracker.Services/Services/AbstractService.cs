@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using IssueTracker.Data;
+﻿using IssueTracker.Data;
 
-namespace IssueTracker.Services
+namespace IssueTracker.Services.Services
 {
     public abstract class AbstractService
     {

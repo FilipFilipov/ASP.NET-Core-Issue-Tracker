@@ -1,9 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace IssueTracker.Services
+namespace IssueTracker.Services.Services
 {
     public interface ILabelsService
     {
-        Task<string[]> GetLabelsAsync(string search, int? projectId);
+        Task<SelectListItem[]> ListLabelsAsync(int projectId);
+
+        Task<bool> LabelsExistInProjectAsync(int projectId, IEnumerable<int> labelIds);
     }
 }

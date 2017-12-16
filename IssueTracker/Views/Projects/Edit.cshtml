@@ -1,16 +1,21 @@
 ﻿@model IssueTracker.Services.Models.ProjectViewModel
 
 @{
-    ViewBag.Title = "Create Project";
+    ViewBag.Title = "Edit Project";
 }
 
-<h2>Create Project</h2>
+<h2>Edit Project</h2>
 <div class="row">
     <div class="col-md-6">
         <section>
             @Html.Partial("_ProjectForm", Model)
         </section>
     </div>   
+    <div class="col-md-6">
+        <section>
+            @Html.Partial("_Issues", Model.Issues)
+        </section>
+    </div>
 </div>
 
 @section Scripts {

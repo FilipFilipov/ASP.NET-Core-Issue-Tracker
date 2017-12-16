@@ -4,7 +4,7 @@ using IssueTracker.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-namespace IssueTracker.Services.Implementations
+namespace IssueTracker.Services.Services.Implementations
 {
     public class UsersService : AbstractService, IUsersService
     {
