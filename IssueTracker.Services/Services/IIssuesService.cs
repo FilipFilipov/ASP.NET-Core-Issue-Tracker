@@ -6,8 +6,10 @@ namespace IssueTracker.Services.Services
 {
     public interface IIssuesService
     {
+        Task<IssueViewModel> GetIssueAsync(int id, int projectId);
+
         Task<Issue> CreateIssueAsync(int projectId, IssueViewModel model);
 
-        Task<bool> IssueExistsAsync(int projectId, string title);
+        Task<Issue> EditIssueAsync(IssueViewModel model);
     }
 }

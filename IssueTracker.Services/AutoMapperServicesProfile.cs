@@ -12,7 +12,7 @@ namespace IssueTracker.Services
             CreateMap<Project, ProjectViewModel>()
                 .ForMember(dest => dest.Priorities,
                     opt => opt.MapFrom(src => src.Priorities.Select(p => p.PriorityType)))
-                .ForMember(dest => dest.Labels,
+                .ForMember(dest => dest. Labels,
                     opt => opt.MapFrom(src => src.ProjectLabels.Select(pl => pl.Label.Name)))
                 .ReverseMap()
                 .ForMember(dest => dest.Priorities,
@@ -38,9 +38,10 @@ namespace IssueTracker.Services
                 .ForMember(dest => dest.Labels,
                     opt => opt.MapFrom(src => src.IssueLabels.Select(li => li.Label.Id)))
                 .ReverseMap()
-                .ForMember(dest => dest.ProjectId, opt => opt.Ignore())
-                .ForMember(dest => dest.IssueLabels,
-                    opt => opt.MapFrom(src => src.Labels.Select(id => new IssueLabel { LabelId = id })));
+                .ForMember(dest => dest.ProjectId, opt => opt.Ignore());
+
+            CreateMap<Comment, CommentViewModel>()
+                .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Author.UserName));
         }
     }
 }

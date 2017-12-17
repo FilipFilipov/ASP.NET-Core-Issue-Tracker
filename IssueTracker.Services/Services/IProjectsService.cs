@@ -14,6 +14,6 @@ namespace IssueTracker.Services.Services
 
         Task<bool> ProjectExistsAsync(int id);
 
-        Task<bool> ProjectExistsAsync(string name);
+        Task<bool> ProjectExistsAsync(string name, int? excludingId = null);
     }
 }

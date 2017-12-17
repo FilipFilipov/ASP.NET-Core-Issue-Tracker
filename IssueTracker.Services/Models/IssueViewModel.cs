@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using IssueTracker.Data.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IssueTracker.Services.Models
 {
@@ -25,10 +27,19 @@ namespace IssueTracker.Services.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "Due Date")]
-        public DateTime DueDate { get; set; } = DateTime.UtcNow;
+        public DateTime DueDate { get; set; } = DateTime.Today.AddDays(1);
 
         public PriorityType? Priority { get; set; }
 
         public ICollection<int> Labels { get; set; } = new List<int>();
+
+        public IEnumerable<SelectListItem> RemoveInvalidStatusTransitions(
+            IEnumerable<SelectListItem> allStatuses)
+        {
+            string[] invalidStatuses = null;
+            
+
+            return allStatuses.Where(sli => !invalidStatuses.Contains(sli.Text));
+        }
     }
 }

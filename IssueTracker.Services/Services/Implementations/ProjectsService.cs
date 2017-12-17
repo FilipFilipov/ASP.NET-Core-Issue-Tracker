@@ -67,9 +67,9 @@ namespace IssueTracker.Services.Services.Implementations
             return await db.Projects.AnyAsync(p => p.Id == id);
         }
 
-        public async Task<bool> ProjectExistsAsync(string name)
+        public async Task<bool> ProjectExistsAsync(string name, int? excludingId = null)
         {
-            return await db.Projects.AnyAsync(p => p.Name == name);
+            return await db.Projects.AnyAsync(p => p.Name == name && p.Id != excludingId);
         }
     }
 }

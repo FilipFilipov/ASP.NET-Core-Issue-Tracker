@@ -1,23 +1,20 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using IssueTracker.Models;
 
-namespace IssueTracker.Data.Models
+namespace IssueTracker.Services.Models
 {
-    public class Comment
+    public class CommentViewModel
     {
         public int Id { get; set; }
 
         public int IssueId { get; set; }
 
-        public int AuthorId { get; set; }
-
-        public User Author { get; set; }
+        public string Author { get; set; }
 
         public DateTime Created { get; set; }
 
         [Required]
-        [MaxLength(1000)]
+        [StringLength(1000)]
         public string Text { get; set; }
     }
 }

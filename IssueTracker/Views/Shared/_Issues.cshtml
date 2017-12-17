@@ -3,9 +3,6 @@
 @{
     var withProject = ViewBag.WithProject as bool? == true;
 }
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table table-bordered table-striped table-hover">
     <thead>
         <tr>
@@ -60,8 +57,7 @@
                     @Html.DisplayFor(modelItem => item.Priority)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */})
-                    @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})
+                    @Html.ActionLink("Edit", "Edit", "Issues", new { projectId = ViewBag.ProjectId, id = item.Id })
                 </td>
             </tr>
         }
