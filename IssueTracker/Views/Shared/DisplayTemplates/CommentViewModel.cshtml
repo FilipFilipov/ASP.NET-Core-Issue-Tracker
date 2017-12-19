@@ -1,0 +1,33 @@
+﻿@model IssueTracker.Services.Models.CommentViewModel
+
+@{
+    var canDelete = ViewData.ContainsKey("CanDeleteComments") &&
+        (bool) ViewData["CanDeleteComments"];
+}
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Author)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Created)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Text)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Text)
+        </dd>
+    </dl>
+    @if (canDelete)
+    {
+        <button class="btn btn-danger comment-delete" data-id="@Model.Id">Delete</button>
+    }
+</div>

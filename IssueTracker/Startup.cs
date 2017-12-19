@@ -46,6 +46,7 @@ namespace IssueTracker
             services.AddScoped<IPrioritiesService, PrioritiesService>();
             services.AddScoped<ILabelsService, LabelsService>();
             services.AddScoped<IIssuesService, IssuesService>();
+            services.AddScoped<ICommentsService, CommentsService>();
 
             services.AddMvc(options =>
             {

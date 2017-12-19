@@ -1,0 +1,69 @@
+﻿@model IssueTracker.Services.Models.Issue.IssuesDetailsModel
+    
+@{
+    ViewBag.Title = "View Issue";
+}
+
+<h2>View Issue</h2>
+<div class="row">
+    <div class="col-md-6">
+        <section>
+            <div>
+                <h4>@Model.Title</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Assignee)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Assignee)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Status)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.DueDate)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.DueDate)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Priority)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Priority)
+                    </dd>
+                    @if (Model.Labels.Any())
+                    {
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Labels)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.LabelsString)
+                        </dd>
+                    }
+                </dl>
+            </div>
+            <div>
+                <a asp-action="Edit" asp-controller="Projects" asp-route-id="@Model.ProjectId" class="btn btn-default">
+                    Back to Project
+                </a>
+            </div>
+        </section>
+    </div>
+    <div class="col-md-6">
+        <section>
+            <h4>@Html.DisplayNameFor(m => m.Comments)</h4>
+            @Html.DisplayFor(m => m.Comments)
+        </section>
+    </div>
+</div>

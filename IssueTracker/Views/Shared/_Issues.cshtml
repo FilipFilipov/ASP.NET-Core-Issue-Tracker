@@ -1,4 +1,5 @@
-﻿@model IEnumerable<IssueTracker.Services.Models.IssueListModel>
+﻿@using IssueTracker.Services.Models.Issue
+@model IEnumerable<IssueTracker.Services.Models.Issue.IssueListModel>
 
 @{
     var withProject = ViewBag.WithProject as bool? == true;
@@ -27,7 +28,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Priority)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -36,7 +36,8 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Title)
+                    @Html.ActionLink(item.Title, "Details", "Issues",
+                        new { projectId = ViewBag.ProjectId, id = item.Id })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Assignee)
@@ -55,9 +56,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Priority)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", "Issues", new { projectId = ViewBag.ProjectId, id = item.Id })
                 </td>
             </tr>
         }
