@@ -1,22 +1,21 @@
 ﻿using System.Threading.Tasks;
-using IssueTracker.Services.Models;
+using IssueTracker.Models;
+using IssueTracker.Services.Models.Project;
 using IssueTracker.Services.Services;
+using IssueTracker.Services.Services.Utilities;
 using IssueTracker.Web.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace IssueTracker.Web.Controllers
 {
-    [Authorize]
-    public class ProjectsController : Controller
+    public class ProjectsController : BaseController
     {
-        private readonly IProjectsService projects;
-        private readonly IUsersService users;
-
-        public ProjectsController(IProjectsService projects, IUsersService users)
+        public ProjectsController(UserManager<User> userManager, IProjectsService projects) :
+            base(userManager, projects)
         {
-            this.projects = projects;
-            this.users = users;
         }
 
         [ActionName("Index")]
@@ -25,7 +24,28 @@ namespace IssueTracker.Web.Controllers
             return View(await projects.GetProjectsAsync());
         }
 
+        [ActionName("Details")]
+        public async Task<IActionResult> DetailsAsync(int id)
+        {
+            var result1 = await projects.GetProjectForEditingAsync<ProjectViewModel>(id, User);
+            if (result1.NotificationType == NotificationType.Success)
+            {
+                TempData["Model"] = JsonConvert.SerializeObject(result1.Value);
+                return RedirectToAction("Edit", new { id });
+            }
+
+            var result2 = await projects.GetProjectAsync<ProjectDetailsModel>(id);
+            if (result2.NotificationType == NotificationType.Error)
+            {          
+                this.AddNotification(result2.Message, result2.NotificationType);
+                return RedirectToAction("Index");
+            }
+
+            return View(result2.Value);
+        }
+
         [ActionName("Create")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateAsync()
         {
             await GetDropdownValues();
@@ -35,22 +55,22 @@ namespace IssueTracker.Web.Controllers
 
         [HttpPost]
         [ActionName("Create")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateAsync(ProjectViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
             if (await projects.ProjectExistsAsync(model.Name))
             {
                 ModelState.AddModelError(nameof(model.Name), "Name is taken");
                 return View(model);
             }
 
-            await projects.CreateProjectAsync(model);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
-            this.AddNotification("Project created!", NotificationType.Success);
+            var result = await projects.CreateProjectAsync(model, User);
+            this.AddNotification(result.Message, result.NotificationType);
 
             return RedirectToAction("Index");
         }
@@ -58,20 +78,63 @@ namespace IssueTracker.Web.Controllers
         [ActionName("Edit")]
         public async Task<IActionResult> EditAsync(int id)
         {
-            var model = await projects.GetProjectAsync(id);
-            if (model == null)
+            ProjectViewModel model;
+            if (TempData.ContainsKey("Model"))
             {
-                return NotFound();
+                model = JsonConvert.DeserializeObject<ProjectViewModel>(
+                    TempData["Model"].ToString());
             }
+            else
+            {
+                var result = await projects.GetProjectForEditingAsync<ProjectViewModel>(id, User);
+                if (result.NotificationType == NotificationType.Error)
+                {          
+                    this.AddNotification(result.Message, result.NotificationType);
+                    return RedirectToAction("Index");
+                }
+
+                model = result.Value;
+            }           
 
             await GetDropdownValues();
 
             return View(model);
         }
 
+        [HttpPost]
+        [ActionName("Edit")]
+        public async Task<IActionResult> EditAsync(ProjectViewModel model)
+        {
+            if (await projects.ProjectExistsAsync(model.Name))
+            {
+                ModelState.AddModelError(nameof(model.Name), "Name is taken");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var result = await projects.EditProjectAsync(model, User);
+            this.AddNotification(result.Message, result.NotificationType);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ActionName("Delete")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var result = await projects.DeleteProjectAsync(id, User);
+            this.AddNotification(result.Message, result.NotificationType);
+
+            return RedirectToAction("Index");
+        }
+
         private async Task GetDropdownValues()
         {
-            ViewBag.UserList = await users.ListUsersAsync();
-        }
+            ViewBag.UserList = await ListUsersAsync();
+        }       
     }
 }

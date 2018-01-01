@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using IssueTracker.Models;
+using IssueTracker.Services;
+using IssueTracker.Web.Extensions;
+using IssueTracker.Web.Models.AccountViewModels;
+using IssueTracker.Web.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using IssueTracker.Models;
-using IssueTracker.Models.AccountViewModels;
-using IssueTracker.Services;
 
-namespace IssueTracker.Controllers
+namespace IssueTracker.Web.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]
@@ -247,7 +249,7 @@ namespace IssueTracker.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -335,7 +337,7 @@ namespace IssueTracker.Controllers
         {
             if (userId == null || code == null)
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction("Index", "Home");
             }
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -455,7 +457,7 @@ namespace IssueTracker.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction("Index", "Home");
             }
         }
 

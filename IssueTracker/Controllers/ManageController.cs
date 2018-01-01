@@ -3,16 +3,18 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using IssueTracker.Models;
+using IssueTracker.Services;
+using IssueTracker.Web.Extensions;
+using IssueTracker.Web.Models.ManageViewModels;
+using IssueTracker.Web.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using IssueTracker.Models;
-using IssueTracker.Models.ManageViewModels;
-using IssueTracker.Services;
 
-namespace IssueTracker.Controllers
+namespace IssueTracker.Web.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]

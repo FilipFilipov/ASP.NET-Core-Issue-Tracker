@@ -1,6 +1,4 @@
-using System;
-
-namespace IssueTracker.Models
+namespace IssueTracker.Web.Models
 {
     public class ErrorViewModel
     {

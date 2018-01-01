@@ -1,5 +1,4 @@
-﻿@using IssueTracker.Services.Models.Issue
-@model IssueTracker.Services.Models.Issue.IssueViewModel
+﻿@model IssueTracker.Services.Models.Issue.IssueViewModel
 
 @{
     ViewBag.Title = "Edit Issue";
@@ -14,32 +13,13 @@
         </section>
     </div>
     <div class="col-md-6">
-        <section>            
-            @Html.EditorFor(m => m.NewComment)
-            <br />
-            @if (Model.CanDeleteComments)
-            {
-                <form id="comment-delete-form" asp-action="RemoveComment" method="post">
-                    <input type="hidden" id="CommentId" name="CommentId" />
-                </form>
-            }
-            <h4>@Html.DisplayNameFor(m => m.Comments)</h4>
-            @Html.DisplayFor(m => m.Comments, new { Model.CanDeleteComments })
+        <section>
+            @await Component.InvokeAsync("Comment",
+                new { Model.Comments, Model.CanComment, Model.CanDeleteComments })          
         </section>
     </div>
 </div>
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
-
-    <script>
-        $('.comment-delete').click(function () {
-            var id = $(this).data('id');
-            $('#CommentId').val(id);
-            if (window.confirm("Are you sure you want to delete this comment?"))
-            {                       
-                $('#comment-delete-form').submit();
-            }           
-        });
-    </script>
 }

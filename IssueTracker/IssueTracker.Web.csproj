@@ -24,4 +24,12 @@
     <ProjectReference Include="..\IssueTracker.Services\IssueTracker.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Shared\EditorTemplates\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Issues\Index.cshtml" />
+  </ItemGroup>
+
 </Project>

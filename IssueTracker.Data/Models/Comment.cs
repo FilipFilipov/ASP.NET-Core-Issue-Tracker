@@ -10,7 +10,7 @@ namespace IssueTracker.Data.Models
 
         public int IssueId { get; set; }
 
-        public int AuthorId { get; set; }
+        public string AuthorId { get; set; }
 
         public User Author { get; set; }
 
@@ -19,5 +19,7 @@ namespace IssueTracker.Data.Models
         [Required]
         [MaxLength(1000)]
         public string Text { get; set; }
+
+        public Issue Issue { get; set; }
     }
 }

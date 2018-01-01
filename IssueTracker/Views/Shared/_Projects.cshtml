@@ -1,0 +1,75 @@
+﻿@model IEnumerable<IssueTracker.Services.Models.Project.ProjectListModel>
+
+@{
+    var isAdmin = User.IsInRole("Admin");
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <section>
+            @if (isAdmin)
+            {
+                <p>
+                    <a asp-action="Create" asp-controller="Projects" class="btn btn-primary">
+                        Add Project
+                    </a>
+                </p>
+
+                <form id="project-delete-form" asp-action="Delete" method="post">
+                    <input type="hidden" id="Id" name="Id" />
+                </form>
+            }
+
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LeaderName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Issues)
+                        </th>
+
+                        @if (isAdmin)
+                        {
+                            <th></th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var project in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-action="Details" asp-controller="Projects" asp-route-id="@project.Id">@project.Name</a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => project.LeaderName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => project.Issues)
+                            </td>
+
+                            @if (isAdmin)
+                            {
+                                <td>
+                                    <button class="btn btn-danger btn-xs project-delete" data-id="@project.Id" onclick="
+var id = $(this).data('id');
+$('#Id').val(id);
+if (window.confirm('Are you sure you want to delete this project?'))
+{
+    $('#project-delete-form').submit();
+}
+">Delete</button>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </section>
+    </div>
+</div>

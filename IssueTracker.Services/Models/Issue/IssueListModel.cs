@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using IssueTracker.Data.Models;
 
-namespace IssueTracker.Services.Models
+namespace IssueTracker.Services.Models.Issue
 {
     public class IssueListModel
     {
@@ -10,9 +10,11 @@ namespace IssueTracker.Services.Models
 
         public string Title { get; set; }
 
+        public string Project { get; set; }
+
         public string Assignee { get; set; }
 
-        public string Project { get; set; }
+        public string AssigneeId { get; set; }
 
         public IssueStatus Status { get; set; }
 

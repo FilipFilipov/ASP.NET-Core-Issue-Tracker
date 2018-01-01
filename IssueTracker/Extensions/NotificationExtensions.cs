@@ -31,6 +31,7 @@
 
 using System;
 using System.Collections.Generic;
+using IssueTracker.Services.Services.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -100,11 +101,5 @@ namespace IssueTracker.Web.Extensions
         }
     }
 
-    public enum NotificationType
-    {
-        Error,
-        Warning,
-        Success,
-        Info
-    }
+
 }

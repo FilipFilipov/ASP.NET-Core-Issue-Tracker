@@ -26,9 +26,7 @@ namespace IssueTracker.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AuthorId");
-
-                    b.Property<string>("AuthorId1");
+                    b.Property<string>("AuthorId");
 
                     b.Property<DateTime>("Created");
 
@@ -40,7 +38,7 @@ namespace IssueTracker.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId1");
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("IssueId");
 
@@ -321,7 +319,7 @@ namespace IssueTracker.Data.Migrations
                 {
                     b.HasOne("IssueTracker.Models.User", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorId1");
+                        .HasForeignKey("AuthorId");
 
                     b.HasOne("IssueTracker.Data.Models.Issue")
                         .WithMany("Comments")

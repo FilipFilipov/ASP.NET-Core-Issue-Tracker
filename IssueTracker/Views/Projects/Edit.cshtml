@@ -1,4 +1,4 @@
-﻿@model IssueTracker.Services.Models.ProjectViewModel
+﻿@model IssueTracker.Services.Models.Project.ProjectViewModel
 
 @{
     ViewBag.Title = "Edit Project";
@@ -11,15 +11,19 @@
         <section>
             @Html.Partial("_ProjectForm", Model)
         </section>
-    </div>   
+    </div>
     <div class="col-md-6">
+        <label asp-for="Issues"></label>
         <section>
             <p>
-                <a asp-action="Create" asp-controller="Issues" asp-route-projectId="@Model.Id" asp-route-id="@null">
+                <a class="btn btn-primary" asp-action="Create" asp-controller="Issues" asp-route-projectId="@Model.Id" asp-route-id="@null">
                     Create New
                 </a>
             </p>
-            @Html.Partial("_Issues", Model.Issues)
+            @if (Model.Issues.Any())
+            {
+                @Html.Partial("_Issues", Model.Issues)
+            }
         </section>
     </div>
 </div>

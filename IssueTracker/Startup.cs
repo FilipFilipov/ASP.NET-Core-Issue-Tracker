@@ -1,18 +1,20 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using System.Threading.Tasks;
+using AutoMapper;
 using IssueTracker.Data;
 using IssueTracker.Models;
-using IssueTracker.Services;
 using IssueTracker.Services.Services;
 using IssueTracker.Services.Services.Implementations;
+using IssueTracker.Web.Services;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace IssueTracker
+namespace IssueTracker.Web
 {
     public class Startup
     {
@@ -41,7 +43,6 @@ namespace IssueTracker
                 .AddDefaultTokenProviders();
 
             services.AddScoped<IEmailSender, EmailSender>();
-            services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IProjectsService, ProjectsService>();
             services.AddScoped<IPrioritiesService, PrioritiesService>();
             services.AddScoped<ILabelsService, LabelsService>();
@@ -57,7 +58,7 @@ namespace IssueTracker
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider services)
         {
             if (env.IsDevelopment())
             {
@@ -80,6 +81,30 @@ namespace IssueTracker
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            CreateAdmin(services).Wait();
+        }
+
+        private static async Task CreateAdmin(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+
+            if (!await roleManager.RoleExistsAsync("Admin"))
+            {
+                await roleManager.CreateAsync(new IdentityRole("Admin"));
+            }
+
+            if (await userManager.FindByNameAsync("Admin") == null)
+            {
+                var admin = new User { UserName = "Admin" };
+                var createPowerUser = await userManager.CreateAsync(admin, "password");
+
+                if (createPowerUser.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(admin, "Admin");
+                }
+            }
         }
     }
 }

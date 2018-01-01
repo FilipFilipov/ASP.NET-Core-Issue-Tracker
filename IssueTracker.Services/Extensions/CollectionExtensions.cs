@@ -7,7 +7,7 @@ namespace IssueTracker.Services.Extensions
     public static class CollectionExtensions
     {
         public static void ReplaceEntityCollection<T, K>(this ICollection<T> oldCollection,
-            ICollection<T> newCollection, Func<T, K> selector)
+            IEnumerable<T> newCollection, Func<T, K> selector)
         {
             var newItemKeys = new HashSet<K>(newCollection.Select(selector));
             var oldItemKeys = new HashSet<K>(oldCollection.Select(selector));
@@ -28,8 +28,6 @@ namespace IssueTracker.Services.Extensions
             {
                 oldCollection.Add(itemsToAdd[i]);
             }
-
-
         }
     }
 }

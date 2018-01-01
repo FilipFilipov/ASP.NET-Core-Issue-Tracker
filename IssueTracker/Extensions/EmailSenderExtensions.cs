@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using IssueTracker.Services;
+using IssueTracker.Web.Services;
 
-namespace IssueTracker.Services
+namespace IssueTracker.Web.Extensions
 {
     public static class EmailSenderExtensions
     {

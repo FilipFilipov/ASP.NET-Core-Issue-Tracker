@@ -1,5 +1,5 @@
-﻿@using IssueTracker.Views.Manage
-@inject SignInManager<ApplicationUser> SignInManager
+﻿@using IssueTracker.Web.Views.Manage
+@inject SignInManager<User> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

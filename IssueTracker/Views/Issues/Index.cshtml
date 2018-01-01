@@ -1,0 +1,8 @@
+﻿@model IEnumerable<IssueTracker.Services.Models.Issue.IssueListModel>
+
+@{
+    ViewBag.Title = "Issues";
+}
+
+<h2>All Issues</h2>
+@await Html.PartialAsync("_Issues", Model)

@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using IssueTracker.Data.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace IssueTracker.Services.Models
+namespace IssueTracker.Services.Models.Issue
 {
-    public class IssueViewModel
+    public abstract class IssueBaseModel
     {
         public int Id { get; set; }
+
+        [Required]
+        [DisplayName("Assignee")]
+        public string AssigneeId { get; set; }
 
         [Required]
         [StringLength(1000)]
@@ -19,10 +22,6 @@ namespace IssueTracker.Services.Models
         [StringLength(1000)]
         public string Description { get; set; }
 
-        [Required]
-        [Display(Name = "Assignee")]
-        public string AssigneeId { get; set; }
-
         public IssueStatus Status { get; set; }
 
         [DataType(DataType.Date)]
@@ -31,15 +30,8 @@ namespace IssueTracker.Services.Models
 
         public PriorityType? Priority { get; set; }
 
-        public ICollection<int> Labels { get; set; } = new List<int>();
+        public bool CanComment { get; set; }
 
-        public IEnumerable<SelectListItem> RemoveInvalidStatusTransitions(
-            IEnumerable<SelectListItem> allStatuses)
-        {
-            string[] invalidStatuses = null;
-            
-
-            return allStatuses.Where(sli => !invalidStatuses.Contains(sli.Text));
-        }
+        public ICollection<CommentViewModel> Comments;
     }
 }

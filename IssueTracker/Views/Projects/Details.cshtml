@@ -1,0 +1,46 @@
+﻿@model IssueTracker.Services.Models.Project.ProjectDetailsModel
+
+@{
+    ViewBag.Title = "Project Details";
+    ViewBag.ProjectId = Model.Id;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <section>
+            <br />
+            <div class="panel panel-default">
+                <div class="panel-heading">@Model.Name</div>
+                <div class="panel-body">
+                    <dl class="dl-horizontal well">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.LeaderName)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.LeaderName)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
+                    </dl>
+                    <div>
+                        <a asp-action="Index" class="btn btn-default">
+                            Back to Projects
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        @if (Model.Issues.Any())
+        {
+            <section>
+                <h4>@Html.DisplayNameFor(m => m.Issues)</h4>
+                @Html.Partial("_Issues", Model.Issues)
+            </section>
+        }
+    </div>
+</div>

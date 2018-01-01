@@ -1,0 +1,28 @@
+﻿@model IEnumerable<IssueTracker.Services.Models.CommentViewModel>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Comments</div>
+    <div class="panel-body">
+        @if (ViewBag.CanComment)
+        {
+            <form asp-action="AddComment" asp-controller="Issues" method="post">
+                <div class="form-group">
+                    <label for="Text" class="control-label">Text</label>
+                    <textarea Id="Text" name="Text" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-success" type="submit" value="Add Comment" />
+                </div>
+            </form>
+        }
+
+        @if (ViewBag.CanDeleteComments)
+        {
+            <form id="comment-delete-form" asp-action="RemoveComment" asp-controller="Issues" method="post">
+                <input type="hidden" id="CommentId" name="CommentId" />
+            </form>
+        }
+
+        @Html.DisplayForModel()
+    </div>
+</div>

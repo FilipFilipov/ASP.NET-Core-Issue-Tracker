@@ -1,19 +1,33 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 using IssueTracker.Data.Models;
-using IssueTracker.Services.Models;
+using IssueTracker.Services.Models.Project;
+using IssueTracker.Services.Services.Utilities;
 
 namespace IssueTracker.Services.Services
 {
     public interface IProjectsService
     {
-        Task<ProjectListModel[]> GetProjectsAsync();
+        Task<ProjectListModel[]> GetProjectsAsync(string userId = null);
 
-        Task<ProjectViewModel> GetProjectAsync(int projectId);
+        Task<ServiceResult<T>> GetProjectAsync<T>(int projectId) where T: ProjectBaseModel;
 
-        Task<Project> CreateProjectAsync(ProjectViewModel model);
+        Task<ServiceResult<T>> GetProjectForEditingAsync<T>(
+            int projectId, ClaimsPrincipal user) where T: ProjectBaseModel;
 
-        Task<bool> ProjectExistsAsync(int id);
+        Task<ServiceResult<Project>> CreateProjectAsync(
+            ProjectViewModel model, ClaimsPrincipal user);
+
+        Task<ServiceResult<Project>> EditProjectAsync(
+            ProjectViewModel model, ClaimsPrincipal user);  
+
+        Task<ServiceResult<Project>> DeleteProjectAsync(
+            int id, ClaimsPrincipal user);
 
         Task<bool> ProjectExistsAsync(string name, int? excludingId = null);
+
+        Task<bool> IsProjectLeadAsync(int projectId, ClaimsPrincipal user);
+
+        Task<bool> IsProjectAsigneeAsync(int projectId, ClaimsPrincipal user);
     }
 }

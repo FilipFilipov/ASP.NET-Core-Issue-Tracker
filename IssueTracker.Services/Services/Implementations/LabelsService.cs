@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using IssueTracker.Data;
+using IssueTracker.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +11,8 @@ namespace IssueTracker.Services.Services.Implementations
 {
     public class LabelsService : AbstractService, ILabelsService
     {
-        public LabelsService(IssueTrackerDbContext db) : base(db)
+        public LabelsService(IssueTrackerDbContext db, UserManager<User> userManager) :
+            base(db, userManager)
         {
         }
 
