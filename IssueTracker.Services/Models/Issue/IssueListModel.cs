@@ -14,8 +14,6 @@ namespace IssueTracker.Services.Models.Issue
 
         public string Assignee { get; set; }
 
-        public string AssigneeId { get; set; }
-
         public IssueStatus Status { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:d}")]
@@ -23,7 +21,5 @@ namespace IssueTracker.Services.Models.Issue
         public DateTime DueDate { get; set; }
 
         public PriorityType? Priority { get; set; }
-
-        public string[] Labels { get; set; }
     }
 }

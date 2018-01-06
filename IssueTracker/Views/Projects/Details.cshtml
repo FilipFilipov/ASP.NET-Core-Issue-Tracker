@@ -25,6 +25,26 @@
                         <dd>
                             @Html.DisplayFor(model => model.Description)
                         </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Priorities)
+                        </dt>
+                        <dd>
+                            @{
+                                var priorities = string.Join(", ", Model.Priorities);
+                                @Html.DisplayFor(model => priorities)
+                            }                          
+                        </dd>
+                        <dt>
+                            @{
+                                var labels = Model.Labels.Any() ?
+                                    string.Join(", ", Model.Labels) :
+                                    "(empty)";
+                                @Html.DisplayNameFor(model => Model.Labels)
+                            }                           
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => labels)
+                        </dd>
                     </dl>
                     <div>
                         <a asp-action="Index" class="btn btn-default">

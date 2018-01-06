@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using AutoMapper;
 using IssueTracker.Data.Models;
 using IssueTracker.Services.Extensions;
@@ -13,22 +12,24 @@ namespace IssueTracker.Services
     {
         public AutoMapperServicesProfile()
         {
-            CreateMap<Project, ProjectBaseModel>()
+            CreateMap<Project, ProjectBaseModel>();
+
+            CreateMap<Project, ProjectDetailsModel>()
                 .ForMember(dest => dest.Priorities,
                     opt => opt.MapFrom(src => src.Priorities.Select(p => p.PriorityType)))
                 .ForMember(dest => dest. Labels,
-                    opt => opt.MapFrom(src => src.ProjectLabels.Select(pl => pl.Label.Name)));
-
-            CreateMap<Project, ProjectDetailsModel>()
-                .IncludeBase<Project, ProjectBaseModel>()
+                    opt => opt.MapFrom(src => src.ProjectLabels.Select(pl => pl.Label.Name)))
                 .ForMember(dest => dest.LeaderName,
                     opt => opt.MapFrom(src => src.Leader.UserName));
 
             CreateMap<Project, ProjectViewModel>()
-                .IncludeBase<Project, ProjectBaseModel>()
-                .ReverseMap()
                 .ForMember(dest => dest.Priorities,
-                    opt => opt.MapFrom(src => src.Priorities.Select(id => new Priority { PriorityType = id})));
+                    opt => opt.MapFrom(src => src.Priorities.Select(p => p.PriorityType)))
+                .ForMember(dest => dest. Labels,
+                    opt => opt.MapFrom(src => src.ProjectLabels.Select(pl => pl.Label.Name)))
+                .ReverseMap()
+                .ForMember(dest => dest.Priorities, opt => opt.Ignore())
+                .ForMember(dest => dest.Issues, opt => opt.Ignore());
 
             CreateMap<Project, ProjectListModel>()
                 .ForMember(dest => dest.LeaderName,
@@ -37,14 +38,11 @@ namespace IssueTracker.Services
                     opt => opt.MapFrom(src => src.Issues.Count));
 
             CreateMap<Issue, IssueListModel>()
-                //.ForMember(dest => dest.Assignee, opt => opt.ExplicitExpansion())
                 .ForMember(dest => dest.Project, opt => opt.ExplicitExpansion())
                 .ForMember(dest => dest.Assignee,
                     opt => opt.MapFrom(src => src.Assignee.UserName))
                 .ForMember(dest => dest.Project,
-                    opt => opt.MapFrom(src => src.Project.Name))
-                .ForMember(dest => dest.Labels,
-                    opt => opt.MapFrom(src => src.IssueLabels.Select(li => li.Label.Name)));
+                    opt => opt.MapFrom(src => src.Project.Name));
 
             CreateMap<Issue, IssueBaseModel>()
                 .ForMember(dest => dest.Comments,

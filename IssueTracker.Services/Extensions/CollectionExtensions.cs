@@ -19,14 +19,14 @@ namespace IssueTracker.Services.Extensions
                 .Where(at => !oldItemKeys.Contains(selector(at)))
                 .ToArray();
 
-            for (var i = 0; i < itemsToRemove.Length; i++)
+            foreach (var item in itemsToRemove)
             {
-                oldCollection.Remove(itemsToRemove[i]);
+                oldCollection.Remove(item);
             }
 
-            for (var i = 0; i < itemsToAdd.Length; i++)
+            foreach (var item in itemsToAdd)
             {
-                oldCollection.Add(itemsToAdd[i]);
+                oldCollection.Add(item);
             }
         }
     }

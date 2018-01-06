@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using IssueTracker.Data.Models;
 using IssueTracker.Services.Models.Issue;
 
 namespace IssueTracker.Services.Models.Project
@@ -17,8 +18,12 @@ namespace IssueTracker.Services.Models.Project
         [StringLength(500)]
         public string Description { get; set; }
 
-        public ICollection<IssueListModel> Issues { get; set; } = new List<IssueListModel>();
-      
+        [DisplayName("Issue Priorities")]
+        [Required]
+        public PriorityType[] Priorities { get; set; }
+
+        public string[] Labels { get; set; } = new string[0];
+
         [DisplayName("Issue Labels")]
         public string LabelsString
         {
@@ -27,5 +32,7 @@ namespace IssueTracker.Services.Models.Project
                 new string[0] :
                 value.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
         }
+
+        public ICollection<IssueListModel> Issues { get; set; } = new List<IssueListModel>();       
     }
 }

@@ -11,10 +11,6 @@ namespace IssueTracker.Services.Models.Project
         [DisplayName("Leader")]
         public string LeaderName { get; set; }
 
-        public string LeaderId { get; set; }
-
         public int Issues { get; set; }
-
-        public string CurrentUserId { get; set; }
     }
 }

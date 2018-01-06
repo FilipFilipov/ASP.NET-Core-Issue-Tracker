@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using System.Security.Principal;
 using IssueTracker.Data;
 using IssueTracker.Models;
 using Microsoft.AspNetCore.Identity;

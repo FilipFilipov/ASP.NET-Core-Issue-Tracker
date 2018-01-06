@@ -69,7 +69,7 @@ namespace IssueTracker.Web.Controllers
                 return View(model);
             }
 
-            var result = await projects.CreateProjectAsync(model, User);
+            var result = await projects.CreateProjectAsync(model);
             this.AddNotification(result.Message, result.NotificationType);
 
             return RedirectToAction("Index");
@@ -105,7 +105,7 @@ namespace IssueTracker.Web.Controllers
         [ActionName("Edit")]
         public async Task<IActionResult> EditAsync(ProjectViewModel model)
         {
-            if (await projects.ProjectExistsAsync(model.Name))
+            if (await projects.ProjectExistsAsync(model.Name, model.Id))
             {
                 ModelState.AddModelError(nameof(model.Name), "Name is taken");
             }
@@ -126,7 +126,7 @@ namespace IssueTracker.Web.Controllers
         [ActionName("Delete")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var result = await projects.DeleteProjectAsync(id, User);
+            var result = await projects.DeleteProjectAsync(id);
             this.AddNotification(result.Message, result.NotificationType);
 
             return RedirectToAction("Index");

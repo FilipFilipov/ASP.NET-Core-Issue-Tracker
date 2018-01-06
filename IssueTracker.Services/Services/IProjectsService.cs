@@ -15,19 +15,13 @@ namespace IssueTracker.Services.Services
         Task<ServiceResult<T>> GetProjectForEditingAsync<T>(
             int projectId, ClaimsPrincipal user) where T: ProjectBaseModel;
 
-        Task<ServiceResult<Project>> CreateProjectAsync(
-            ProjectViewModel model, ClaimsPrincipal user);
+        Task<ServiceResult<Project>> CreateProjectAsync(ProjectViewModel model);
 
         Task<ServiceResult<Project>> EditProjectAsync(
             ProjectViewModel model, ClaimsPrincipal user);  
 
-        Task<ServiceResult<Project>> DeleteProjectAsync(
-            int id, ClaimsPrincipal user);
+        Task<ServiceResult<Project>> DeleteProjectAsync(int id);
 
         Task<bool> ProjectExistsAsync(string name, int? excludingId = null);
-
-        Task<bool> IsProjectLeadAsync(int projectId, ClaimsPrincipal user);
-
-        Task<bool> IsProjectAsigneeAsync(int projectId, ClaimsPrincipal user);
     }
 }
