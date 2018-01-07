@@ -40,6 +40,7 @@ namespace IssueTracker.Services.Services.Implementations
             }
 
             return await projects
+                .OrderBy(p => p.Name)
                 .ProjectTo<ProjectListModel>()
                 .ToArrayAsync();
         }

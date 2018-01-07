@@ -1,15 +1,14 @@
 ﻿@model IssueTracker.Services.Models.Issue.IssueDetailsModel
 
 @{
-    ViewBag.Title = "View Issue";
+    ViewBag.Title = "Issue Details";
 }
-
 <h2>View Issue</h2>
 <div class="row">
     <div class="col-md-6">
         <section>
             <div class="panel panel-default">
-                <div class="panel-heading">@Model.Title</div>
+                <div class="panel-heading"><strong>@Model.Title</strong></div>
                 <div class="panel-body">
                     <dl class="dl-horizontal well">
                         <dt>
@@ -53,7 +52,7 @@
                         }
                     </dl>
                     <div>
-                        <a asp-action="Edit" asp-controller="Projects" asp-route-id="@Model.ProjectId" class="btn btn-default">
+                        <a asp-action="Details" asp-controller="Projects" asp-route-id="@Model.ProjectId" class="btn btn-default">
                             Back to Project
                         </a>
                     </div>
@@ -61,7 +60,7 @@
             </div>
         </section>
     </div>
-    @if (!Model.CanComment && Model.Comments.Any())
+    @if (Model.CanComment || Model.Comments.Any())
     {
         <div class="col-md-6">
             <section>

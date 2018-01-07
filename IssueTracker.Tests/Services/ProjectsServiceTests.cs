@@ -378,6 +378,7 @@ namespace IssueTracker.Tests.Services
                         Id = 1,
                         Title = TestIssueTitle1,
                         Project = null,
+                        ProjectId = 1,
                         Assignee = TestUserName1,
                         DueDate = DateTime.Today,
                         Status = IssueStatus.Open,

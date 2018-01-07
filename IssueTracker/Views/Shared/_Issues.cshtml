@@ -36,7 +36,7 @@
             <tr>
                 <td>
                     @Html.ActionLink(item.Title, "Details", "Issues",
-                        new { projectId = ViewBag.ProjectId, id = item.Id })
+                        new { projectId = item.ProjectId, id = item.Id })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Assignee)

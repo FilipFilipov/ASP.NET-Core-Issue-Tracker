@@ -2,15 +2,13 @@
 
 @{
     ViewBag.Title = "Project Details";
-    ViewBag.ProjectId = Model.Id;
 }
-
 <div class="row">
     <div class="col-md-12">
         <section>
             <br />
             <div class="panel panel-default">
-                <div class="panel-heading">@Model.Name</div>
+                <div class="panel-heading"><strong>@Model.Name</strong></div>
                 <div class="panel-body">
                     <dl class="dl-horizontal well">
                         <dt>
@@ -58,7 +56,7 @@
         @if (Model.Issues.Any())
         {
             <section>
-                <h4>@Html.DisplayNameFor(m => m.Issues)</h4>
+                <h3>@Html.DisplayNameFor(m => m.Issues)</h3>
                 @Html.Partial("_Issues", Model.Issues)
             </section>
         }

@@ -30,6 +30,8 @@ namespace IssueTracker.Services.Services.Implementations
             }
 
             return await issues
+                .OrderBy(i => i.ProjectId)
+                .ThenBy(i => i.Title)
                 .ProjectTo<IssueListModel>(i => withProject ? i.Project : null)
                 .ToArrayAsync();
         }

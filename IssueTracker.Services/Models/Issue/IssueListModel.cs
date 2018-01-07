@@ -12,6 +12,8 @@ namespace IssueTracker.Services.Models.Issue
 
         public string Project { get; set; }
 
+        public int ProjectId { get; set; }
+
         public string Assignee { get; set; }
 
         public IssueStatus Status { get; set; }

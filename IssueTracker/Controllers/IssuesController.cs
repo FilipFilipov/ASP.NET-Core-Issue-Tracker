@@ -152,6 +152,12 @@ namespace IssueTracker.Web.Controllers
 
             if (!ModelState.IsValid)
             {
+                var isAdmin = User.IsInRole("Admin");
+                var isProjectLead = project.LeaderId == userManager.GetUserId(User);
+                model.CanEdit = isAdmin || isProjectLead;
+                model.CanDeleteComments = isAdmin || isProjectLead;
+                model.Comments = await comments.GetIssueCommentsAsync(model.Id);
+
                 await GetDropdownValues(projectId, issue.Status);
                 return View(model);
             }
@@ -273,7 +279,7 @@ namespace IssueTracker.Web.Controllers
             if (newIssue.DueDate <= DateTime.Today)
             {
                 ModelState.AddModelError(nameof(newIssue.DueDate),
-                    "Date must be in the futere");
+                    "Date must be in the future");
             }
 
             if (project.Priorities.All(p => p != newIssue.Priority))
