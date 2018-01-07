@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using IssueTracker.Data.Models;
 using IssueTracker.Services.Models.Issue;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IssueTracker.Services.Models.Project
 {
@@ -12,6 +13,7 @@ namespace IssueTracker.Services.Models.Project
     {    
         [Required]
         [StringLength(100, MinimumLength = 1)]
+        [Remote("IsNameAvailable", "Projects", AdditionalFields = "Id")]
         public string Name { get; set; }
 
         [Required]

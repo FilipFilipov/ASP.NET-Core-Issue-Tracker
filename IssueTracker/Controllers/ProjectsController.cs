@@ -13,6 +13,8 @@ namespace IssueTracker.Web.Controllers
 {
     public class ProjectsController : BaseController
     {
+        public const string NameTakenErrorMessage = "This name is already taken";
+
         public ProjectsController(UserManager<User> userManager, IProjectsService projects) :
             base(userManager, projects)
         {
@@ -60,7 +62,7 @@ namespace IssueTracker.Web.Controllers
         {
             if (await projects.ProjectExistsAsync(model.Name))
             {
-                ModelState.AddModelError(nameof(model.Name), "Name is taken");
+                ModelState.AddModelError(nameof(model.Name), NameTakenErrorMessage);
             }
 
             if (!ModelState.IsValid)
@@ -107,7 +109,7 @@ namespace IssueTracker.Web.Controllers
         {
             if (await projects.ProjectExistsAsync(model.Name, model.Id))
             {
-                ModelState.AddModelError(nameof(model.Name), "Name is taken");
+                ModelState.AddModelError(nameof(model.Name), NameTakenErrorMessage);
             }
 
             if (!ModelState.IsValid)
@@ -131,6 +133,17 @@ namespace IssueTracker.Web.Controllers
             this.AddNotification(result.Message, result.NotificationType);
 
             return RedirectToAction("Index");
+        }
+
+        [ActionName("IsNameAvailable")]
+        public async Task<IActionResult> IsNameAvailableAsync(string name, int? id)
+        {
+            if (await projects.ProjectExistsAsync(name, id))
+            {
+                return Json(NameTakenErrorMessage);
+            }
+
+            return Json(true);
         }
 
         private async Task GetDropdownValues()

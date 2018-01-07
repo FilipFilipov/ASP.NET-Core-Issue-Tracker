@@ -282,7 +282,7 @@ namespace IssueTracker.Web.Controllers
                     "Priority is not valid for this Project");
             }
 
-            if (!await labels.LabelsExistInProjectAsync(project.Id, newIssue.SelectedLabelIds))
+            if (!await labels.LabelsExistInProjectAsync(project.Id.Value, newIssue.SelectedLabelIds))
             {
                 ModelState.AddModelError(nameof(newIssue.SelectedLabelIds),
                     "Not all Labels are valid for this Project");

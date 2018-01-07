@@ -132,7 +132,7 @@ namespace IssueTracker.Tests.Controllers
             projectsMock.Verify(
                 p => p.GetProjectAsync<ProjectDetailsModel>(0), Times.Once);
 
-            AssertViewWithModel(result, new ProjectDetailsModel());
+            AssertViewWithModel(result, new ProjectDetailsModel { Id = 0 });
         }
 
         [Test]
@@ -219,7 +219,7 @@ namespace IssueTracker.Tests.Controllers
         {
             var model = new ProjectViewModel { Name = TestProjectName1 };
             const string errorKey = nameof(ProjectViewModel.Name);
-            const string errorValue = "Name is taken";
+            const string errorValue = ProjectsController.NameTakenErrorMessage;
 
             var result = await controller.CreateAsync(model);
 
@@ -308,7 +308,7 @@ namespace IssueTracker.Tests.Controllers
                 Name = TestProjectName1
             };
             const string errorKey = nameof(ProjectViewModel.Name);
-            const string errorValue = "Name is taken";
+            const string errorValue = ProjectsController.NameTakenErrorMessage;
 
             var result = await controller.EditAsync(model);
 
@@ -332,8 +332,36 @@ namespace IssueTracker.Tests.Controllers
             var result = await controller.DeleteAsync(1);
 
             projectsMock.Verify(p => p.DeleteProjectAsync(1), Times.Once);
+
             AssertRedirectToAction(result);
             AssertNotificationMessage(ProjectsService.Message_Success_ProjectDeleted);
+        }
+
+        [Test]
+        public void ProjectController_ShouldHaveIsNameAvailableAction()
+        {
+            ControllerShouldHaveAction(
+                nameof(ProjectsController.IsNameAvailableAsync), "IsNameAvailable");
+        }
+
+        [Test]
+        public async Task ProjectController_IsNameAvailableAction_ShouldReturnTrue()
+        {
+            var result = await controller.IsNameAvailableAsync(TestProjectName2, null);
+
+            VerifyNameCheckCalled(TestProjectName2);
+
+            AssertJsonResult(result, true);
+        }
+
+        [Test]
+        public async Task ProjectController_IsNameAvailableAction_ShouldReturnError()
+        {
+            var result = await controller.IsNameAvailableAsync(TestProjectName1, null);
+
+            VerifyNameCheckCalled(TestProjectName1);
+
+            AssertJsonResult(result, ProjectsController.NameTakenErrorMessage);
         }
 
         private static void ControllerShouldHaveAction(string methodName,
@@ -361,7 +389,7 @@ namespace IssueTracker.Tests.Controllers
             }
         }
 
-        private  void AssertViewBagIsFilled()
+        private void AssertViewBagIsFilled()
         {
             usersMock.Verify(um => um.Users, Times.Once);
 
@@ -400,6 +428,12 @@ namespace IssueTracker.Tests.Controllers
                     ControllerName = redirectController,
                     RouteValues = redirectRouteValues
                 }, options => options.ExcludingMissingMembers());
+        }
+
+        private static void AssertJsonResult(IActionResult result, object value)
+        {
+            result.Should().BeOfType<JsonResult>()
+                .Which.Value.Should().Be(value);
         }
 
         private void AssertNotificationMessage(string message, bool isError = false)

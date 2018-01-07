@@ -5,7 +5,7 @@ namespace IssueTracker.Services.Models.Project
 {
     public class ProjectBaseModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [Required]
         [DisplayName("Leader")]
