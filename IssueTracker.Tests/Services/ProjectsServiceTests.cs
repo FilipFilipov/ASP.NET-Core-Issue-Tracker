@@ -5,7 +5,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentAssertions;
-using IssueTracker.Data;
 using IssueTracker.Data.Models;
 using IssueTracker.Models;
 using IssueTracker.Services;
@@ -21,43 +20,8 @@ using NUnit.Framework;
 namespace IssueTracker.Tests.Services
 {
     [TestFixture]
-    public class ProjectsServiceTests
+    public class ProjectsServiceTests : BaseProjectTests
     {
-        private const string TestUserName1 = "User 1";
-        private const string TestUserName2 = "User 2";
-
-        private const string TestProjectName1 = "Project 1";
-        private const string TestProjectName2 = "Project 2";
-        private const string TestProjectName3 = "Project 3";
-        private const string TestProjectName4 = "Project 4";
-
-        private const string TestProjectDescription1 = "Project Description 1";
-        private const string TestProjectDescription2 = "Project Description 2";
-        private const string TestProjectDescription3 = "Project Description 3";
-        private const string TestProjectDescription4 = "Project Description 4";
-
-        private const string TestLabelName1 = "Label 1";
-        private const string TestLabelName2 = "Label 2";
-
-        private const string TestIssueTitle1 = "Issue 1";
-        private const string TestIssueDescription1 = "Issue Description 1";
-        private const string TestCommentText1 = "Comment 1";
-
-        private static readonly string TestUserId1 = Guid.NewGuid().ToString();
-        private static readonly string TestUserId2 = Guid.NewGuid().ToString();
-
-        private static readonly User TestUser1 = new User
-        {
-            Id = TestUserId1,
-            UserName = TestUserName1
-        };
-
-        private static readonly User TestUser2 = new User
-        {
-            Id = TestUserId2,
-            UserName = TestUserName2
-        };
-
         private static readonly Label TestLabel1 = new Label
         {
             Name = TestLabelName1
@@ -125,23 +89,18 @@ namespace IssueTracker.Tests.Services
             LeaderId = TestUserId2
         };
 
-        private static readonly IssueTrackerDbContext Db = new IssueTrackerDbContext(
-            new DbContextOptionsBuilder<IssueTrackerDbContext>()
-                .UseInMemoryDatabase("IssueTracker")
-                .EnableSensitiveDataLogging()
-                .Options);
-
         private static readonly UserManager<User> UserManager = new UserManager<User>(
             new UserStore<User>(Db), null, null, null, null, null, null, null, null);
 
         [OneTimeSetUp]
-        public async Task Setup()
+        public override async Task Setup()
         {
-            Mapper.Initialize(c => c.AddProfile(new AutoMapperServicesProfile()));
+            await base.Setup();
 
-            await Db.Users.AddRangeAsync(TestUser1, TestUser2);
             await Db.Projects.AddRangeAsync(TestProject1, TestProject2, TestProject3);
             await Db.SaveChangesAsync();
+            
+            Mapper.Initialize(c => c.AddProfile(new AutoMapperServicesProfile()));
         }
 
         [Test]

@@ -22,21 +22,6 @@ namespace IssueTracker.Web.Controllers
             this.projects = projects;
         }
 
-        protected bool IsAdmin()
-        {
-            return User.IsInRole("Admin");
-        }
-
-        protected bool IsProjectLead(string leaderId)
-        {
-            return leaderId != userManager.GetUserId(User);
-        }
-
-        protected bool IsIssueAsignee(string assigneeId)
-        {
-            return assigneeId != userManager.GetUserId(User);
-        }
-
         protected async Task<SelectListItem[]> ListUsersAsync()
         {
             return await userManager.Users

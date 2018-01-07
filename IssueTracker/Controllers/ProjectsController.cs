@@ -61,11 +61,11 @@ namespace IssueTracker.Web.Controllers
             if (await projects.ProjectExistsAsync(model.Name))
             {
                 ModelState.AddModelError(nameof(model.Name), "Name is taken");
-                return View(model);
             }
 
             if (!ModelState.IsValid)
             {
+                await GetDropdownValues();
                 return View(model);
             }
 
@@ -112,6 +112,7 @@ namespace IssueTracker.Web.Controllers
 
             if (!ModelState.IsValid)
             {
+                await GetDropdownValues();
                 return View(model);
             }
 
