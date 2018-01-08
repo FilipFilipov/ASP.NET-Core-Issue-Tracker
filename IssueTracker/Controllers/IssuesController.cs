@@ -165,7 +165,7 @@ namespace IssueTracker.Web.Controllers
             var result = await issues.EditIssueAsync(model, User);
 
             this.AddNotification(result.Message, result.NotificationType);
-            return RedirectToAction("Edit", "Projects", new { id = projectId });
+            return RedirectToAction("Details", "Projects", new { id = projectId });
         }
 
         [HttpPost]
@@ -276,7 +276,8 @@ namespace IssueTracker.Web.Controllers
                     "Project already has an issue with this Title");
             }
 
-            if (newIssue.DueDate <= DateTime.Today)
+            if (oldIssue == null && newIssue.DueDate <= DateTime.Today ||
+                oldIssue?.DueDate != newIssue.DueDate && newIssue.DueDate <= DateTime.Today)
             {
                 ModelState.AddModelError(nameof(newIssue.DueDate),
                     "Date must be in the future");

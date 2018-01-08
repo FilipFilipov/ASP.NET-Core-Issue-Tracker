@@ -28,6 +28,10 @@
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
     <div class="form-group">
+        @if (!Model.CanEdit)
+        {
+            <input asp-for="AssigneeId" type="hidden" />
+        }
         <label asp-for="AssigneeId" class="control-label"></label>
         <select asp-for="AssigneeId" class="form-control" asp-items="@users" attr-readonly="@(!Model.CanEdit)"></select>
         <span asp-validation-for="AssigneeId" class="text-danger"></span>
@@ -38,6 +42,10 @@
         <span asp-validation-for="DueDate" class="text-danger"></span>
     </div>
     <div class="form-group">
+        @if (!Model.CanEdit)
+        {
+            <input asp-for="Priority" type="hidden" />
+        }
         <label asp-for="Priority" class="control-label"></label>
         <select asp-for="Priority" class="form-control" asp-items="@priorities" attr-readonly="@(!Model.CanEdit)"></select>
         <span asp-validation-for="Priority" class="text-danger"></span>
